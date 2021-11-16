@@ -9,8 +9,10 @@ case $1 in
                 do
                         echo "Running update on $entry:"
                         set -x
-                        docker-compose -f "$entry" pull
-                        docker-compose -f "$entry" up -d --remove-orphans
+						cd $entry
+                        docker-compose pull
+                        docker-compose up -d --remove-orphans
+						cd ..
                 done
                 docker image prune -f
                 exit 0
@@ -19,9 +21,11 @@ case $1 in
                 if [ -d $1 ]; then
                         echo "Running update on $1:"
                         set -x
-                        docker-compose -f "$1" pull
-                        docker-compose -f "$1" up -d --remove-orphans
+						cd $1
+                        docker-compose pull
+                        docker-compose up -d --remove-orphans
                         docker image prune -f
+						cd ..
                         exit 0
                 else
                         echo "Folder $1 does not exist. Exiting!"
